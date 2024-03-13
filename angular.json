@@ -3,5 +3,132 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "theos-core-library": {
+      "projectType": "library",
+      "root": "projects/theos-core-library",
+      "sourceRoot": "projects/theos-core-library/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/theos-core-library/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/theos-core-library/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/theos-core-library/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/theos-core-library/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "theos-sandbox": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/theos-sandbox",
+      "sourceRoot": "projects/theos-sandbox/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/theos-sandbox",
+            "index": "projects/theos-sandbox/src/index.html",
+            "browser": "projects/theos-sandbox/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/theos-sandbox/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/theos-sandbox/src/favicon.ico",
+              "projects/theos-sandbox/src/assets"
+            ],
+            "styles": [
+              "projects/theos-sandbox/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "theos-sandbox:build:production"
+            },
+            "development": {
+              "buildTarget": "theos-sandbox:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "theos-sandbox:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/theos-sandbox/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/theos-sandbox/src/favicon.ico",
+              "projects/theos-sandbox/src/assets"
+            ],
+            "styles": [
+              "projects/theos-sandbox/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
   }
 }
